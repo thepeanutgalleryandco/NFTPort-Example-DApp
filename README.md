@@ -21,3 +21,6 @@ This is an example DApp based on the NFTPort collection contract implementation
 ## 4. Update Styling Of Site
 - Update the css/style.css and css/css2.css as needed
 - Update / Add media sections for your Mobile, Tablet and Desktop modes
+
+## 5. Whitelist
+If you are going to make use of a whitelist, then you have to deploy the site to Netlify and follow the [codeSTACKr minter-dapp](https://github.com/codeSTACKr/minter-dapp) steps to add NFTPort environment variables. If you would like to use alternative hosting, then you will need to re-write the `functions/merkleProof.js` script and also update the `js/app.js` section where the whitelist check occurs.
