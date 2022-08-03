@@ -4,8 +4,8 @@ The [codeSTACKr minter-dapp](https://github.com/codeSTACKr/minter-dapp) repo was
 
 If you would like to support my NFT collection, please take a look at the below.
 
-[TheResidentLegendNFT Minting DApp](https://theresidentlegendnft.xyz/)
-
+[TheResidentLegendNFT Minting DApp](https://theresidentlegendnft.xyz/) </br>
+[Steak-Bites Collection](https://opensea.io/collection/steak-bites)
 ## 1. Update info in js/constants.js
 - Update the `contractAddress` and `chain` fields
 - Update the other fields to suite the terms of your project if needed
