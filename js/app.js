@@ -1,4 +1,6 @@
 let accounts;
+let publicMintActive;
+let presaleMintActive;
 
 // METAMASK CONNECTION
 window.addEventListener("DOMContentLoaded", async () => {
@@ -170,8 +172,8 @@ async function checkChain() {
 
 async function loadInfo() {
   window.info = await window.contract.methods.getInfo().call();
-  const publicMintActive = await contract.methods.mintingActive().call();
-  const presaleMintActive = await contract.methods.presaleActive().call();
+  publicMintActive = await contract.methods.mintingActive().call();
+  presaleMintActive = await contract.methods.presaleActive().call();
   const mainHeading = document.getElementById("mainHeading");
   const subHeading = document.getElementById("subHeading");
   const mainText = document.getElementById("mainText");
@@ -239,12 +241,19 @@ async function loadInfo() {
   }, 1000);
 
   let priceType = "";
-  if (chain === "rinkeby") {
+  if (chain.toLowerCase() === "ethereum" || chain.toLowerCase() === "rinkeby") {
     priceType = "ETH";
-  } else if (chain === "polygon") {
+  } else if (chain.toLowerCase() === "polygon") {
     priceType = "MATIC";
   }
-  const price = web3.utils.fromWei(info.deploymentConfig.mintPrice, "ether");
+
+  let price = 0;
+
+  if (publicMintActive) {
+    price = web3.utils.fromWei(info.runtimeConfig.publicMintPrice, "ether");
+  } else if (presaleMintActive) {
+    price = web3.utils.fromWei(info.runtimeConfig.presaleMintPrice, "ether");
+  }
   const pricePerMint = document.getElementById("pricePerMint");
   const maxPerMint = document.getElementById("maxPerMint");
   const totalSupply = document.getElementById("totalSupply");
@@ -304,13 +313,19 @@ function setTotalPrice() {
     mintInput.disabled = true;
     return;
   }
-  const totalPriceWei =
-    BigInt(info.deploymentConfig.mintPrice) * BigInt(mintInputValue);
+
+  let totalPriceWei = 0;
+
+  if (publicMintActive) {
+    totalPriceWei = BigInt(info.runtimeConfig.publicMintPrice) * BigInt(mintInputValue);
+  } else if (presaleMintActive) {
+    totalPriceWei = BigInt(info.runtimeConfig.presaleMintPrice) * BigInt(mintInputValue);
+  }
 
   let priceType = "";
-  if (chain === "rinkeby") {
+  if (chain.toLocaleLowerCase() === "ethereum" || chain.toLocaleLowerCase() === "rinkeby") {
     priceType = "ETH";
-  } else if (chain === "polygon") {
+  } else if (chain.toLocaleLowerCase() === "polygon") {
     priceType = "MATIC";
   }
   const price = web3.utils.fromWei(totalPriceWei.toString(), "ether");
@@ -327,7 +342,7 @@ async function mint() {
   mintButton.innerHTML = spinner;
 
   const amount = parseInt(document.getElementById("mintInput").value);
-  const value = BigInt(info.deploymentConfig.mintPrice) * BigInt(amount);
+  const value = BigInt(info.runtimeConfig.publicMintPrice) * BigInt(amount);
   const publicMintActive = await contract.methods.mintingActive().call();
   const presaleMintActive = await contract.methods.presaleActive().call();
 
