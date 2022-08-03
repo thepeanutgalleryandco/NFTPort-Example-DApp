@@ -1,10 +1,9 @@
 # NFTPort-Example-DApp
-This is an example DApp based on the NFTPort collection contract implementation
+This is an example DApp based on the NFTPort collection contract implementation.</br>
 The [codeSTACKr minter-dapp](https://github.com/codeSTACKr/minter-dapp) repo was used as a base to create this repo.
 
-If you would like to support my NFT collections, please take a look at the below.
+If you would like to support my NFT collection, please take a look at the below.
 
-[Steak-Bites Collection Sale](https://opensea.io/collection/steak-bites)
 [TheResidentLegendNFT Minting DApp](https://theresidentlegendnft.xyz/)
 
 ## 1. Update info in js/constants.js
