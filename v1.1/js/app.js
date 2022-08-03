@@ -1,7 +1,7 @@
 let accounts;
 let publicMintActive;
 let presaleMintActive;
-let price = 0;
+let price = 0.0000000000000000000;
 
 // METAMASK CONNECTION
 window.addEventListener("DOMContentLoaded", async () => {
