@@ -2,6 +2,7 @@ let accounts;
 let publicMintActive;
 let presaleMintActive;
 let price = 0.0000000000000000000;
+let priceType = "ETH";
 
 // METAMASK CONNECTION
 window.addEventListener("DOMContentLoaded", async () => {
@@ -114,11 +115,14 @@ async function checkChain() {
   let chainId = 0;
   if (chain.toLowerCase() === "ethereum") {
     chainId = 1;
+    priceType = "ETH";
   }
   else if (chain.toLowerCase() === "rinkeby") {
     chainId = 4;
+    priceType = "ETH";
   } else if (chain.toLowerCase() === "polygon") {
     chainId = 137;
+    priceType = "MATIC";
   }
   if (window.ethereum.networkVersion !== chainId) {
     try {
@@ -242,13 +246,6 @@ async function loadInfo() {
     countdownCard.classList.add("show-card");
   }, 1000);
 
-  let priceType = "";
-  if (chain.toLowerCase() === "ethereum" || chain.toLowerCase() === "rinkeby") {
-    priceType = "ETH";
-  } else if (chain.toLowerCase() === "polygon") {
-    priceType = "MATIC";
-  }
-
   if (publicMintActive) {
     price = web3.utils.fromWei(info.runtimeConfig.publicMintPrice, "ether");
   } else if (presaleMintActive) {
@@ -317,12 +314,6 @@ function setTotalPrice() {
   const totalPriceWei =
     BigInt(price) * BigInt(mintInputValue);
 
-  let priceType = "";
-  if (chain.toLowerCase() === "ethereum" || chain.toLowerCase() === "rinkeby") {
-    priceType = "ETH";
-  } else if (chain.toLowerCase() === "polygon") {
-    priceType = "MATIC";
-  }
   const finalPrice = web3.utils.fromWei(totalPriceWei.toString(), "ether");
   totalPrice.innerText = `${finalPrice} ${priceType}`;
   mintButton.disabled = false;
