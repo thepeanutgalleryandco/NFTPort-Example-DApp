@@ -1,7 +1,6 @@
 let accounts;
 let publicMintActive;
 let presaleMintActive;
-let price = 0.0000000000000000000;
 let priceType = "ETH";
 
 // METAMASK CONNECTION
@@ -246,6 +245,7 @@ async function loadInfo() {
     countdownCard.classList.add("show-card");
   }, 1000);
 
+  let price = 0;
   if (publicMintActive) {
     price = web3.utils.fromWei(info.runtimeConfig.publicMintPrice, "ether");
   } else if (presaleMintActive) {
@@ -311,13 +311,17 @@ function setTotalPrice() {
     mintInput.disabled = true;
     return;
   }
-  const totalPriceWei =
-    BigInt(price) * BigInt(mintInputValue);
 
-  const finalPrice = web3.utils.fromWei(totalPriceWei.toString(), "ether");
-  totalPrice.innerText = `${finalPrice} ${priceType}`;
+  let price = 0;
+  if (publicMintActive) {
+    price = web3.utils.fromWei((BigInt(info.runtimeConfig.publicMintPrice) * BigInt(mintInputValue)).toString(), "ether");
+  } else if (presaleMintActive) {
+    price = web3.utils.fromWei((BigInt(info.runtimeConfig.presaleMintPrice) * BigInt(mintInputValue)).toString(), "ether");
+  }
+
+  totalPrice.innerText = `${price} ${priceType}`;
   mintButton.disabled = false;
-  mintInput.disabled = false;
+  mintInput.disabled = false;  
 }
 
 async function mint() {
@@ -328,8 +332,13 @@ async function mint() {
   mintButton.innerHTML = spinner;
 
   const amount = parseInt(document.getElementById("mintInput").value);
-  const value = BigInt(price) * BigInt(amount);
-  
+  let value = 0;
+  if (publicMintActive) {
+    value = BigInt(info.runtimeConfig.publicMintPrice) * BigInt(amount);
+  } else if (presaleMintActive) {
+    value = BigInt(info.runtimeConfig.presaleMintPrice) * BigInt(amount);
+  }
+
   if (publicMintActive) {
     // PUBLIC MINT
     try {
