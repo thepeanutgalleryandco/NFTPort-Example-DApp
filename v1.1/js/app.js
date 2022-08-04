@@ -1,7 +1,7 @@
 let accounts;
 let publicMintActive;
 let presaleMintActive;
-let priceType = "ETH";
+let priceType = "";
 
 // METAMASK CONNECTION
 window.addEventListener("DOMContentLoaded", async () => {
